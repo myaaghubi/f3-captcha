@@ -1,0 +1,10 @@
+<div class="row captcha">
+    <div class="col-md-12 mb-2 captcha-code">
+        {{@captcha.code | raw}}
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="form-group">
+          <input type="text" name="captcha-entered-code" id="author" class="form-control captcha-text" placeholder="Enter security code" required>
+        </div>
+    </div>
+</div>
