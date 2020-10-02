@@ -14,8 +14,9 @@ class Captcha extends \Prefab {
   private $captchaWidth = 150;
   private $captchaHeight = 70;
   private $captchaFont = 'monofont.ttf';
+  private $captchaFontScale = 0.65;
   private $color = "6d87cf";
-  private $letters = '1234567890abcdefghijklmnopkrstuvwxyz';
+  private $letters = '123456789abcdefghijklmnopkrstuvwxyz';
   private static $sessionKey = 'captcha_code';
   
   /**
@@ -42,7 +43,7 @@ class Captcha extends \Prefab {
     $this->makeCaptchaCode($this->codeLength);
     $captcha = $f3->get('SESSION.'.self::$sessionKey);
 
-    $fontSize = $this->captchaHeight * 0.65;
+    $fontSize = $this->captchaHeight * $this->captchaFontScale;
     $fontAddress = realpath($f3->get('UI')).'/fonts/'.$this->captchaFont;
 
     $captchaImage = @imagecreate($this->captchaWidth, $this->captchaHeight);
