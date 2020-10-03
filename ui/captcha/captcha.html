@@ -1,10 +1,11 @@
 <div class="row captcha">
-    <div class="col-md-12 mb-2 captcha-code">
+    <div class="col-md-12 mb-2">
         {{@captcha.code | raw}}
+        <button class="btn btn-link" onclick="this.previousElementSibling.src=this.previousElementSibling.src">Reset</button>
     </div>
-    <div class="col-md-4 col-sm-6">
+    <div class="col-lg-4 col-md-8">
         <div class="form-group">
-          <input type="text" name="captcha-entered-code" id="author" class="form-control captcha-text" placeholder="Enter security code" required>
+            <input type="text" name="{{@captcha.key}}" class="form-control" placeholder="Enter security code" required>
         </div>
     </div>
 </div>

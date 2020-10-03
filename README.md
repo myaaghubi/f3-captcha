@@ -1,9 +1,23 @@
 # F3 Captcha
 A better captcha for Fat-Free Framework.
 
-The default captcha template contains the bootstrap class, which can look like this:
+![screenshot-english](screenshots/shot1.jpg?raw=true "F3 Captcha Screentshot-English Font") ![screenshot-persian](screenshots/shot2.jpg?raw=true "F3 Captcha Screentshot-Persian Font")
 
-![screenshot1](screenshots/shot1.jpg?raw=true "F3 Captcha Screentshot 1") ![screenshot2](screenshots/shot2.jpg?raw=true "F3 Captcha Screentshot 2")
+## Config
+This plugin is configurable via config file:
+``` ini
+[captcha]
+LENGTH=5
+CASE_SENSITIVE=TRUE
+WIDTH=150
+HEIGHT=70
+FONT=monofont.ttf
+FONT_SCALE=0.65
+WAVES=TRUE
+LETTERS=123456789abcdefghijklmnopkrstuvwxyz
+KEY=captcha_code
+```
+The above config is the default, you can ignore/remove each one you don't need to change.
 
 ## Usage
 
@@ -43,10 +57,10 @@ if (\Captcha::verify()) {
 ## Customization
 
 ### - Style
-There is some properties in `captcha.php` you may prefer to change. Also for more customization, check out `ui/captcha/captcha.html`.
+Default captcha template contains the bootstrap class which can change by developer, check out `ui/captcha/captcha.html`.
 
 ### - Font
-The default font is `monofont.ttf`, you can add your font in `ui/fonts/` and set the font name in `captcha.php`.
+The default font is `monofont.ttf`, you can add your font in `ui/fonts/` and set the font name in config file.
 
 
 ## License
