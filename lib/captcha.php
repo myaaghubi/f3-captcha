@@ -2,8 +2,8 @@
 
 /**
  * @package F3 Captcha
- * @version 1.1.0
- * @link http://github.com/myaghobi/f3-captcha Github
+ * @version 1.2.0
+ * @link http://github.com/myaghobi/F3-captcha Github
  * @author Mohammad Yaghobi <m.yaghobi.abc@gmail.com>
  * @copyright Copyright (c) 2020, Mohammad Yaghobi
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3
@@ -21,18 +21,43 @@ class Captcha extends \Prefab {
   private static $defaultKey = 'captcha_code';
 
   /**
+   * copy the layout and font in the UI path
+   *
+   * @return void
+   */
+  function install($f3 = null) {
+    if (!$f3) {
+      $f3 = Base::instance();
+    }
+
+    if ($this->f3->get('DEBUG') < 3) {
+      return;
+    }
+
+    if (!is_dir($f3->UI . 'captcha')) {
+      $dirFrom = dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'ui' . DIRECTORY_SEPARATOR;
+      $dirTo = $f3->UI . DIRECTORY_SEPARATOR;
+      $this->dir_copy($dirFrom . 'captcha', $dirTo . 'captcha');
+      $this->dir_copy($dirFrom . 'fonts', $dirTo . 'fonts');
+    }
+  }
+
+  /**
    * generate the output
    *
    * @return string
    */
-  function serve($f3=null) {
+  function serve($f3 = null) {
     if (!$f3) {
-      $f3=Base::instance();
+      $f3 = Base::instance();
     }
-    
-    $width = $f3->get('captcha.WIDTH')?:$this->defaultWidth;
-    $height = $f3->get('captcha.HEIGHT')?:$this->defaultHeight;
-    $key = $f3->get('captcha.KEY')?:self::$defaultKey;
+
+    if ($this->f3->get('DEBUG') >= 3) {
+    }
+
+    $width = $f3->get('captcha.WIDTH') ?: $this->defaultWidth;
+    $height = $f3->get('captcha.HEIGHT') ?: $this->defaultHeight;
+    $key = $f3->get('captcha.KEY') ?: self::$defaultKey;
 
     $f3->set('captcha.code', '<img src="' . $f3->get('BASE') . '/captcha" width="' . $width . '" height="' . $height . '" >');
     $f3->set('captcha.key', $key);
@@ -47,23 +72,24 @@ class Captcha extends \Prefab {
    *
    * @return void
    */
-  function makeCaptchaImage($f3=null) {
+  function makeCaptchaImage($f3 = null) {
     if (!$f3) {
-      $f3=Base::instance();
+      $f3 = Base::instance();
     }
+    $this->install($f3);
     $this->makeCaptchaCode($f3);
-    
-    $width = $f3->get('captcha.WIDTH')?:$this->defaultWidth;
-    $height = $f3->get('captcha.HEIGHT')?:$this->defaultHeight;
-    $font = $f3->get('captcha.FONT')?:$this->defaultFont;
-    $fontScale = $f3->get('captcha.FONT_SCALE')?:$this->defaultFontScale;
-    $waves = $f3->get('captcha.WAVES')?:$this->defaultWavesEnable;
-    $key = $f3->get('captcha.KEY')?:self::$defaultKey;
+
+    $width = $f3->get('captcha.WIDTH') ?: $this->defaultWidth;
+    $height = $f3->get('captcha.HEIGHT') ?: $this->defaultHeight;
+    $font = $f3->get('captcha.FONT') ?: $this->defaultFont;
+    $fontScale = $f3->get('captcha.FONT_SCALE') ?: $this->defaultFontScale;
+    $waves = $f3->get('captcha.WAVES') ?: $this->defaultWavesEnable;
+    $key = $f3->get('captcha.KEY') ?: self::$defaultKey;
 
     $captcha = $f3->get('SESSION.' . $key);
 
     $fontSize = $height * $fontScale;
-    $fontAddress = realpath($f3->get('UI')) . '/fonts/' . $font;
+    $fontAddress = realpath($f3->UI) . '/fonts/' . $font;
 
     $captchaImage = @imagecreate($width, $height);
 
@@ -180,17 +206,17 @@ class Captcha extends \Prefab {
    * @param  integer $charactersLength
    * @return string
    */
-  function makeCaptchaCode($f3=null) {
+  function makeCaptchaCode($f3 = null) {
     if (!$f3) {
-      $f3=Base::instance();
+      $f3 = Base::instance();
     }
 
-    $charactersLength = $f3->get('captcha.LENGTH')?:$this->defaultLength;
-    $caseSensitive = $f3->get('captcha.CASE_SENSITIVE')?:self::$defaultCaseSensitiveMode;
-    $key = $f3->get('captcha.KEY')?:self::$defaultKey;
+    $charactersLength = $f3->get('captcha.LENGTH') ?: $this->defaultLength;
+    $caseSensitive = $f3->get('captcha.CASE_SENSITIVE') ?: self::$defaultCaseSensitiveMode;
+    $key = $f3->get('captcha.KEY') ?: self::$defaultKey;
 
     $captcha = '';
-    $letters = $f3->get('captcha.LETTERS')?:$this->defaultLetters;
+    $letters = $f3->get('captcha.LETTERS') ?: $this->defaultLetters;
     $lettersLength = strlen($letters);
     for ($i = 0; $i < $charactersLength; $i++) {
       $char = substr($letters, mt_rand(0, $lettersLength - 1), 1);
@@ -209,15 +235,15 @@ class Captcha extends \Prefab {
    *
    * @return boolean
    */
-  static function verify($f3=null) {
+  static function verify($f3 = null) {
     if (!$f3) {
-      $f3=Base::instance();
+      $f3 = Base::instance();
     }
-    
-    $key = $f3->get('captcha.KEY')?:self::$defaultKey;
-    $caseSensitive = $f3->get('captcha.CASE_SENSITIVE')?:self::$defaultCaseSensitiveMode;
 
-    $enteredCode = $f3->get('POST.'.$key);
+    $key = $f3->get('captcha.KEY') ?: self::$defaultKey;
+    $caseSensitive = $f3->get('captcha.CASE_SENSITIVE') ?: self::$defaultCaseSensitiveMode;
+
+    $enteredCode = $f3->get('POST.' . $key);
     $savedCode = $f3->get('SESSION.' . $key);
 
     if ($caseSensitive) {
@@ -245,5 +271,34 @@ class Captcha extends \Prefab {
       "green" => 0xFF & ($integar >> 0x8),
       "blue" => 0xFF & $integar
     );
+  }
+
+  /**
+   * copy folder
+   *
+   * @param  string $from
+   * @param  string $to
+   * @return void
+   */
+  function dir_copy($from, $to) {
+    // open the source directory
+    $dir = opendir($from);
+
+    // Make the destination directory if not exist
+    @mkdir($to);
+
+    // Loop through the files in source directory
+    while ($file = readdir($dir)) {
+      if (($file != '.') && ($file != '..')) {
+        if (is_dir($from . DIRECTORY_SEPARATOR . $file)) {
+          // for sub directory 
+          $this->dir_copy($from . DIRECTORY_SEPARATOR . $file, $to . DIRECTORY_SEPARATOR . $file);
+        } else {
+          copy($from . DIRECTORY_SEPARATOR . $file, $to . DIRECTORY_SEPARATOR . $file);
+        }
+      }
+    }
+
+    closedir($dir);
   }
 }
