@@ -30,7 +30,7 @@ class Captcha extends \Prefab {
       $f3 = Base::instance();
     }
 
-    if ($this->f3->get('DEBUG') < 3) {
+    if ($f3->get('DEBUG') < 3) {
       return;
     }
 
