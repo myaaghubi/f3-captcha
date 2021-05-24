@@ -5,7 +5,7 @@
 		"captcha",
 		"f3-captcha",
 		"fat-free-plugin",
-		"fat-free-framework",
+		"fat-free-framework"
 	],
 	"homepage": "https://github.com/myaghobi/f3-captcha",
 	"license": "GPL-3.0",
