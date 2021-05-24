@@ -23,7 +23,14 @@ The above config is the default, you can ignore/remove each one you don't need t
 
 ### 1. Install
 
-Copy `captcha.php` into your `lib/` folder & copy content of `ui/` into your `ui/` folder.
+If you use composer, run the below code:
+
+```
+composer require myaghobi/f3-captcha
+```
+For manual installation:
+1. Copy the content of `lib/` folder into your `lib/` folder. 
+2. Copy content of `ui/` into your `ui/` folder.
 
 ### 2. Routing
 
@@ -57,7 +64,7 @@ if (\Captcha::verify()) {
 ## Customization
 
 ### - Style
-Default captcha template contains the bootstrap class which can change by developer, check out `ui/captcha/captcha.html`.
+The default captcha template can be changed by the developer, check out `ui/captcha/captcha.html`.
 
 ### - Font
 The default font is `monofont.ttf`, you can add your font in `ui/fonts/` and set the font name in config file.
@@ -67,4 +74,4 @@ The default font is `monofont.ttf`, you can add your font in `ui/fonts/` and set
 
 You are allowed to use this plugin under the terms of the GNU General Public License version 3 or later.
 
-Copyright (C) 2020 Mohammad Yaghobi
+Copyright (C) 2021 Mohammad Yaghobi
